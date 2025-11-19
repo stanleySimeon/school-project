@@ -3,20 +3,20 @@ FROM gcc:12
 
 WORKDIR /app
 
-# this a installer for build dependencies
+# installer for build dependencies
 RUN apt-get update && apt-get install -y \
   make \
   curl \
   && rm -rf /var/lib/apt/lists/*
 
-# this a copier for source files
+# copier for source files
 COPY . .
 
-# this a downloader for JSON library and builder for application
-RUN make download_json && make
+# downloader for JSON library and builder for application
+RUN make clean || true && make download_json && make
 
-# this a exposer for port 8080
+# exposer for port 8080
 EXPOSE 8080
 
-# this a runner for server
+# runner for server
 CMD ["./school_server"]

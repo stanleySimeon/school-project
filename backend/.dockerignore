@@ -1,0 +1,9 @@
+# this a dockerignore file to exclude build artifacts and unnecessary files
+*.o
+school_server
+data.json
+.git
+.gitignore
+*.md
+nohup.out
+server.log

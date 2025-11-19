@@ -972,6 +972,224 @@ This is an educational project. For production deployment:
 
 ---
 
+## Cloud Deployment
+
+### Option 1: Railway + Vercel (Recommended)
+
+#### Deploy Backend on Railway
+
+**Using Web Interface (Easiest for Windows):**
+1. Go to [railway.app](https://railway.app) and sign in with GitHub
+2. Click **"New Project"** → **"Deploy from GitHub repo"**
+3. Select your repository
+4. Railway automatically detects the Dockerfile
+5. Click **"Deploy"** and wait 2-3 minutes
+6. Go to **Settings** → **Networking** → Copy your public URL
+   - Example: `https://school-backend-production.up.railway.app`
+
+**Using Railway CLI (Alternative):**
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login
+npx railway login
+
+# Deploy
+cd backend
+npx railway up
+```
+
+#### Update Frontend API URL
+
+1. Edit `frontend/lib/api.js`
+2. Change line 3:
+```javascript
+const API_URL = 'https://your-railway-url.up.railway.app';
+```
+
+#### Deploy Frontend on Vercel
+
+**Windows Users:**
+```cmd
+cd frontend
+npx vercel
+```
+
+Follow prompts:
+- Set up and deploy? **Y**
+- Project name? **school-frontend**
+- Directory? Press **Enter**
+- Override settings? **N**
+
+**After deployment:**
+- Copy the Vercel URL
+- Visit your app at the provided URL
+- Share with teachers!
+
+### Option 2: Render (All-in-One)
+
+1. Go to [render.com](https://render.com) and sign in with GitHub
+2. Click **"New +"** → **"Web Service"**
+3. Connect your repository
+
+**For Backend:**
+- Environment: **Docker**
+- Dockerfile path: `./backend/Dockerfile`
+- Click **"Create Web Service"**
+
+**For Frontend:**
+- Environment: **Node**
+- Build command: `cd frontend && npm install && npm run build`
+- Start command: `cd frontend && npm start`
+- Click **"Create Web Service"**
+
+Wait 5-10 minutes for deployment to complete.
+
+### Testing Deployment
+
+Once deployed, test your endpoints:
+```bash
+# Test backend
+curl https://your-backend-url.com/api/courses
+
+# Should return JSON array of courses
+```
+
+### Sharing with Teachers
+
+**Production URLs:**
+- **Frontend**: `https://your-app.vercel.app`
+- **Backend API**: `https://your-app.railway.app`
+
+**Login Credentials:**
+- Teachers: `mrsmith` / `teacher123`
+- Students: `john` / `john123`
+
+---
+
+## Windows-Specific Notes
+
+### PowerShell vs Command Prompt vs Git Bash
+
+**Recommended: Git Bash** (comes with Git for Windows)
+- Unix-like commands work
+- Better compatibility with our scripts
+- Most similar to macOS/Linux experience
+
+**If using PowerShell:**
+```powershell
+# Instead of: make
+mingw32-make
+
+# Instead of: ./school_server
+.\school_server.exe
+
+# Instead of: rm -f file
+Remove-Item file -Force
+```
+
+**If using Command Prompt:**
+```cmd
+REM Instead of: make
+mingw32-make
+
+REM Instead of: ./school_server
+school_server.exe
+
+REM Instead of: rm -f file
+del /f file
+```
+
+### Common Windows Issues
+
+#### Issue: "gcc not recognized"
+
+**Solution:**
+Add MinGW to PATH:
+1. Press `Win + X` → **System**
+2. **Advanced system settings** → **Environment Variables**
+3. Under **System Variables**, find **Path**
+4. Click **Edit** → **New**
+5. Add: `C:\msys64\mingw64\bin` (or your MinGW path)
+6. Click **OK** and restart terminal
+
+#### Issue: "make not found"
+
+**Solution 1 - Use mingw32-make:**
+```bash
+mingw32-make
+```
+
+**Solution 2 - Create alias in Git Bash:**
+```bash
+echo 'alias make="mingw32-make"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Solution 3 - Install Make separately:**
+```bash
+# Using chocolatey
+choco install make
+
+# Or download from: gnuwin32.sourceforge.net
+```
+
+#### Issue: Port already in use
+
+**Windows Command:**
+```cmd
+# Find process using port 8080
+netstat -ano | findstr :8080
+
+# Kill process (replace PID with actual number)
+taskkill /PID 12345 /F
+```
+
+**PowerShell:**
+```powershell
+# Find and kill process on port 8080
+$port = 8080
+Get-Process -Id (Get-NetTCPConnection -LocalPort $port).OwningProcess | Stop-Process -Force
+```
+
+#### Issue: Permission denied when running executables
+
+**Solution:**
+```bash
+# Right-click school_server.exe
+# Properties → Security → Edit
+# Give your user "Full control"
+
+# Or use icacls in cmd:
+icacls school_server.exe /grant Everyone:F
+```
+
+### Windows Firewall
+
+When running the server, Windows Firewall may ask for permission:
+1. Click **"Allow access"** for both Private and Public networks
+2. If you didn't see the prompt, manually add:
+   - Control Panel → Windows Defender Firewall
+   - Advanced settings → Inbound Rules → New Rule
+   - Port → TCP → 8080 → Allow
+
+### Windows Build Tips
+
+**Fast Rebuild Script (save as `rebuild.bat`):**
+```batch
+@echo off
+cd backend
+mingw32-make clean
+mingw32-make
+echo Build complete!
+pause
+```
+
+**Double-click to rebuild!**
+
+---
+
 ## License
 
 This project is provided as-is for educational purposes.
@@ -999,7 +1217,5 @@ Developed as a school management system demonstration project.
   - Modular backend architecture
 
 ---
-
-For deployment instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md)
 
 For backend architecture details, see [backend/ARCHITECTURE.md](./backend/ARCHITECTURE.md)

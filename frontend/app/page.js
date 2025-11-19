@@ -1,15 +1,20 @@
 'use client';
 
-//   login page for authentication for teachers and students
+//   login and signup page for authentication for teachers and students
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { login } from '@/lib/api';
+import { login, signup } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
+  const [isSignup, setIsSignup] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [email, setEmail] = useState('');
   const [role, setRole] = useState('student'); //   role state: 'teacher' or 'student'
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -51,19 +56,57 @@ export default function LoginPage() {
     }
   };
 
+  //   handler for signup form submission
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const response = await signup({
+        username,
+        password,
+        firstName,
+        lastName,
+        dateOfBirth,
+        email,
+        role
+      });
+
+      if (response.success) {
+        //   storage of user data in localStorage
+        localStorage.setItem('user', JSON.stringify(response.user));
+
+        //   redirect to appropriate dashboard
+        if (response.user.role === 'teacher') {
+          router.push('/teacher');
+        } else {
+          router.push('/student');
+        }
+      } else {
+        setError(response.message || 'Failed to create account');
+      }
+    } catch (err) {
+      setError('Failed to connect to server. Please ensure the backend is running.');
+      console.error('Signup error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 px-4 py-8">
       <div className="bg-white rounded-lg shadow-2xl p-4 sm:p-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">
             School Management
           </h1>
-          <p className="text-gray-600">Sign in to your account</p>
+          <p className="text-gray-600">{isSignup ? 'Create your account' : 'Sign in to your account'}</p>
         </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
+        {/* Login/Signup Form */}
+        <form onSubmit={isSignup ? handleSignup : handleLogin} className="space-y-4 sm:space-y-6">
           {/* Role Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
@@ -92,6 +135,74 @@ export default function LoginPage() {
               </button>
             </div>
           </div>
+
+          {/* Signup Fields */}
+          {isSignup && (
+            <>
+              {/* First Name */}
+              <div>
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                  First Name
+                </label>
+                <input
+                  id="firstName"
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                  placeholder="Enter your first name"
+                  required
+                />
+              </div>
+
+              {/* Last Name */}
+              <div>
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Last Name
+                </label>
+                <input
+                  id="lastName"
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                  placeholder="Enter your last name"
+                  required
+                />
+              </div>
+
+              {/* Date of Birth */}
+              <div>
+                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-2">
+                  Date of Birth
+                </label>
+                <input
+                  id="dateOfBirth"
+                  type="date"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                  required
+                />
+              </div>
+
+              {/* Email */}
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+            </>
+          )}
 
           {/* Username Input */}
           <div>
@@ -138,26 +249,41 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? (isSignup ? 'Creating account...' : 'Signing in...') : (isSignup ? 'Sign Up' : 'Sign In')}
           </button>
         </form>
 
-        {/* Demo Credentials */}
-        <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-50 rounded-lg">
-          <p className="text-sm font-semibold text-gray-700 mb-2">Demo Credentials:</p>
-          <div className="text-sm text-gray-600 space-y-2">
-            <div>
-              <p className="font-medium text-purple-600">Teachers:</p>
-              <p className="ml-2">mrsmith, msjones, mrwilson, msdavis</p>
-              <p className="ml-2 text-xs">Password: teacher123</p>
-            </div>
-            <div>
-              <p className="font-medium text-blue-600">Students:</p>
-              <p className="ml-2">john, jane, bob</p>
-              <p className="ml-2 text-xs">Passwords: john123, jane123, bob123</p>
+        {/* Toggle Sign Up/Sign In */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => {
+              setIsSignup(!isSignup);
+              setError('');
+            }}
+            className="text-blue-600 hover:text-blue-800 font-medium text-sm"
+          >
+            {isSignup ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+          </button>
+        </div>
+
+        {/* Demo Credentials - Only show on login */}
+        {!isSignup && (
+          <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm font-semibold text-gray-700 mb-2">Demo Credentials:</p>
+            <div className="text-sm text-gray-600 space-y-2">
+              <div>
+                <p className="font-medium text-purple-600">Teachers:</p>
+                <p className="ml-2">mrsmith, msjones, mrwilson, msdavis</p>
+                <p className="ml-2 text-xs">Password: teacher123</p>
+              </div>
+              <div>
+                <p className="font-medium text-blue-600">Students:</p>
+                <p className="ml-2">john, jane, bob</p>
+                <p className="ml-2 text-xs">Passwords: john123, jane123, bob123</p>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

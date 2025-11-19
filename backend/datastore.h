@@ -34,6 +34,9 @@ public:
     // authenticator for user
     User* authenticateUser(string username, string password);
     
+    // adder for new user
+    void addUser(User user);
+    
     // getter for user by ID
     User* getUserById(string userId);
     

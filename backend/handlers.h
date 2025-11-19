@@ -14,6 +14,9 @@ using namespace std;
 // login authentication
 string handleLogin(DataStore& store, string body);
 
+// signup new user
+string handleSignup(DataStore& store, string body);
+
 // list of all students
 string handleGetStudents(DataStore& store);
 

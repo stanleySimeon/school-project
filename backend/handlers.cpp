@@ -1,4 +1,7 @@
 #include "handlers.h"
+#include <sstream>
+#include <iomanip>
+#include <ctime>
 
 // handler for user login authentication
 string handleLogin(DataStore& store, string body) {
@@ -23,6 +26,50 @@ string handleLogin(DataStore& store, string body) {
         response["message"] = "Invalid credentials";
         return buildHttpResponse(401, "Unauthorized", response.dump());
     }
+}
+
+// handler for user signup
+string handleSignup(DataStore& store, string body) {
+    json requestData = json::parse(body);
+    
+    string username = requestData["username"];
+    string password = requestData["password"];
+    string firstName = requestData["firstName"];
+    string lastName = requestData["lastName"];
+    string dateOfBirth = requestData["dateOfBirth"];
+    string email = requestData["email"];
+    string role = requestData["role"];
+    
+    // generator for unique user ID
+    time_t now = time(0);
+    stringstream ss;
+    ss << role << "_" << now;
+    string userId = ss.str();
+    
+    // creator for new user
+    User newUser;
+    newUser.id = userId;
+    newUser.username = username;
+    newUser.password = password;
+    newUser.role = role;
+    newUser.name = firstName + " " + lastName;
+    newUser.firstName = firstName;
+    newUser.lastName = lastName;
+    newUser.dateOfBirth = dateOfBirth;
+    newUser.email = email;
+    
+    // adder for user to datastore
+    store.addUser(newUser);
+    
+    json response;
+    response["success"] = true;
+    response["user"] = {
+        {"id", newUser.id},
+        {"username", newUser.username},
+        {"role", newUser.role}
+    };
+    
+    return buildHttpResponse(201, "Created", response.dump());
 }
 
 // getter for list of all students

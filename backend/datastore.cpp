@@ -20,6 +20,10 @@ void DataStore::loadData() {
                 user.password = u.value("password", "");
                 user.role = u.value("role", "");
                 user.name = u.value("name", "");
+                user.firstName = u.value("firstName", "");
+                user.lastName = u.value("lastName", "");
+                user.dateOfBirth = u.value("dateOfBirth", "");
+                user.email = u.value("email", "");
                 users.push_back(user);
             }
         }
@@ -78,6 +82,10 @@ void DataStore::saveData() {
         user["username"] = u.username;
         user["password"] = u.password;
         user["role"] = u.role;
+        user["firstName"] = u.firstName;
+        user["lastName"] = u.lastName;
+        user["dateOfBirth"] = u.dateOfBirth;
+        user["email"] = u.email;
         user["name"] = u.name;
         data["users"].push_back(user);
     }
@@ -174,6 +182,12 @@ User* DataStore::authenticateUser(string username, string password) {
         }
     }
     return nullptr;
+}
+
+//   adder for new user
+void DataStore::addUser(User user) {
+    users.push_back(user);
+    saveData();
 }
 
 //   getter for user by ID

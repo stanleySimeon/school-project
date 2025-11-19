@@ -17,6 +17,19 @@ export async function login(username, password) {
   return response.json();
 }
 
+//   signup new user with provided details
+export async function signup(userData) {
+  const response = await fetch(`${API_BASE_URL}/api/signup`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  });
+
+  return response.json();
+}
+
 //   getter for all students (Teacher only)
 export async function getAllStudents() {
   const response = await fetch(`${API_BASE_URL}/api/students`, {

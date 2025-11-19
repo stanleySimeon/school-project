@@ -12,6 +12,11 @@ string routeRequest(DataStore& store, HttpRequest req) {
         return handleLogin(store, req.body);
     }
     
+    //   signup endpoint
+    if (req.method == "POST" && req.path == "/api/signup") {
+        return handleSignup(store, req.body);
+    }
+    
     //   getter for all courses endpoint
     if (req.method == "GET" && req.path == "/api/courses") {
         return handleGetCourses(store);

@@ -37,6 +37,15 @@ public:
     // adder for new user
     void addUser(User user);
     
+    // counter for teachers
+    int getTeacherCount();
+    
+    // counter for students
+    int getStudentCount();
+    
+    // assigner for teacher to course
+    void assignTeacherToCourse(string teacherId, string courseId);
+    
     // getter for user by ID
     User* getUserById(string userId);
     

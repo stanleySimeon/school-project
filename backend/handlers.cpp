@@ -40,10 +40,22 @@ string handleSignup(DataStore& store, string body) {
     string email = requestData["email"];
     string role = requestData["role"];
     
-    // generator for unique user ID
+    // generator for unique user ID based on role and timestamp
     time_t now = time(0);
     stringstream ss;
-    ss << role << "_" << now;
+    
+    if (role == "teacher") {
+        // teacher ID format: T### (auto-incremented)
+        int teacherCount = store.getTeacherCount();
+        ss << "T" << setfill('0') << setw(3) << (teacherCount + 1);
+    } else {
+        // student ID format: FLNNN (First+Last+Number)
+        int studentCount = store.getStudentCount();
+        char firstInitial = toupper(firstName[0]);
+        char lastInitial = toupper(lastName[0]);
+        ss << firstInitial << lastInitial << setfill('0') << setw(3) << (studentCount + 1);
+    }
+    
     string userId = ss.str();
     
     // creator for new user
@@ -60,6 +72,12 @@ string handleSignup(DataStore& store, string body) {
     
     // adder for user to datastore
     store.addUser(newUser);
+    
+    // handler for teacher course assignment
+    if (role == "teacher" && requestData.contains("courseId")) {
+        string courseId = requestData["courseId"];
+        store.assignTeacherToCourse(userId, courseId);
+    }
     
     json response;
     response["success"] = true;

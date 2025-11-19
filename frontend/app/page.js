@@ -2,9 +2,9 @@
 
 //   login and signup page for authentication for teachers and students
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { login, signup } from '@/lib/api';
+import { login, signup, getAllCourses } from '@/lib/api';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -15,9 +15,28 @@ export default function LoginPage() {
   const [lastName, setLastName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [email, setEmail] = useState('');
+  const [courseId, setCourseId] = useState('');
+  const [courses, setCourses] = useState([]);
   const [role, setRole] = useState('student'); //   role state: 'teacher' or 'student'
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  //   fetcher for courses when teacher signup is selected
+  useEffect(() => {
+    if (isSignup && role === 'teacher') {
+      fetchCourses();
+    }
+  }, [isSignup, role]);
+
+  //   fetcher for available courses
+  const fetchCourses = async () => {
+    try {
+      const response = await getAllCourses();
+      setCourses(response);
+    } catch (err) {
+      console.error('Failed to fetch courses:', err);
+    }
+  };
 
   //   handler for login form submission
   const handleLogin = async (e) => {
@@ -62,6 +81,13 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
+    //   validation for teacher course selection
+    if (role === 'teacher' && !courseId) {
+      setError('Please select a course to teach');
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await signup({
         username,
@@ -70,7 +96,8 @@ export default function LoginPage() {
         lastName,
         dateOfBirth,
         email,
-        role
+        role,
+        courseId: role === 'teacher' ? courseId : undefined
       });
 
       if (response.success) {
@@ -201,6 +228,29 @@ export default function LoginPage() {
                   required
                 />
               </div>
+
+              {/* Course Selection - Only for Teachers */}
+              {role === 'teacher' && (
+                <div>
+                  <label htmlFor="course" className="block text-sm font-medium text-gray-700 mb-2">
+                    Course to Teach
+                  </label>
+                  <select
+                    id="course"
+                    value={courseId}
+                    onChange={(e) => setCourseId(e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                    required
+                  >
+                    <option value="">Select a course</option>
+                    {courses.map((course) => (
+                      <option key={course.id} value={course.id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </>
           )}
 

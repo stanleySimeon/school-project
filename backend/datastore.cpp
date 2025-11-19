@@ -190,6 +190,39 @@ void DataStore::addUser(User user) {
     saveData();
 }
 
+//   counter for teachers
+int DataStore::getTeacherCount() {
+    int count = 0;
+    for (auto& user : users) {
+        if (user.role == "teacher") {
+            count++;
+        }
+    }
+    return count;
+}
+
+//   counter for students
+int DataStore::getStudentCount() {
+    int count = 0;
+    for (auto& user : users) {
+        if (user.role == "student") {
+            count++;
+        }
+    }
+    return count;
+}
+
+//   assigner for teacher to course
+void DataStore::assignTeacherToCourse(string teacherId, string courseId) {
+    for (auto& course : courses) {
+        if (course.id == courseId) {
+            course.teacherId = teacherId;
+            saveData();
+            return;
+        }
+    }
+}
+
 //   getter for user by ID
 User* DataStore::getUserById(string userId) {
     for (auto& user : users) {

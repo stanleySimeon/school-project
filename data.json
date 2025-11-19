@@ -1,0 +1,65 @@
+{
+    "grades": [
+        {
+            "note": "Good progress",
+            "score": 85,
+            "studentId": "S001",
+            "subject": "Mathematics",
+            "updatedBy": "T001"
+        },
+        {
+            "note": "Excellent work",
+            "score": 90,
+            "studentId": "S001",
+            "subject": "English",
+            "updatedBy": "T001"
+        },
+        {
+            "note": "Needs improvement",
+            "score": 78,
+            "studentId": "S002",
+            "subject": "Mathematics",
+            "updatedBy": "T001"
+        },
+        {
+            "note": "Very good",
+            "score": 88,
+            "studentId": "S002",
+            "subject": "English",
+            "updatedBy": "T001"
+        },
+        {
+            "note": "Outstanding",
+            "score": 92,
+            "studentId": "S003",
+            "subject": "Mathematics",
+            "updatedBy": "T001"
+        }
+    ],
+    "users": [
+        {
+            "id": "T001",
+            "password": "teacher123",
+            "role": "teacher",
+            "username": "teacher"
+        },
+        {
+            "id": "S001",
+            "password": "john123",
+            "role": "student",
+            "username": "john"
+        },
+        {
+            "id": "S002",
+            "password": "jane123",
+            "role": "student",
+            "username": "jane"
+        },
+        {
+            "id": "S003",
+            "password": "bob123",
+            "role": "student",
+            "username": "bob"
+        }
+    ]
+}

@@ -1,0 +1,21 @@
+# Backend
+backend/school_server
+backend/data.json
+backend/*.o
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.env*.local
+frontend/.vercel
+
+# OS
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

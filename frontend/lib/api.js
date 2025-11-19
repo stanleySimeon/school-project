@@ -1,6 +1,6 @@
-//   API configuration
+// this a API client module for communicating with the backend
 
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_BASE_URL = 'https://school-backend-production-1a5f.up.railway.app';
 
 //   API functions
 

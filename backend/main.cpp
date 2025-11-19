@@ -7,6 +7,7 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string>
+#include <cstdlib>
 #include "models.h"
 #include "datastore.h"
 #include "http.h"
@@ -17,6 +18,10 @@ using namespace std;
 //   main server loop
 int main() {
     DataStore store;
+    
+    //   getter for port from environment or default to 8080
+    const char* portEnv = getenv("PORT");
+    int port = portEnv ? atoi(portEnv) : 8080;
     
     //   creator for TCP socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
@@ -33,7 +38,7 @@ int main() {
     struct sockaddr_in serverAddr;
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_addr.s_addr = INADDR_ANY;
-    serverAddr.sin_port = htons(8080);
+    serverAddr.sin_port = htons(port);
     
     //   binder for socket to port 8080
     if (::bind(serverSocket, (struct sockaddr*)&serverAddr, sizeof(serverAddr)) < 0) {
@@ -49,7 +54,7 @@ int main() {
     
     cout << "========================================" << endl;
     cout << "School Management System Backend" << endl;
-    cout << "Server running on http://localhost:8080" << endl;
+    cout << "Server running on http://0.0.0.0:" << port << endl;
     cout << "========================================" << endl;
     cout << "\nDefault Credentials:" << endl;
     cout << "Teachers:" << endl;

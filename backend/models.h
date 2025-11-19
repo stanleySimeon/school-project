@@ -12,6 +12,7 @@ struct User {
     string password;
     string role;
     string name;
+};
 
 struct Course {
     string id;

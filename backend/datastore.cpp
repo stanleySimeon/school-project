@@ -223,6 +223,23 @@ void DataStore::assignTeacherToCourse(string teacherId, string courseId) {
     }
 }
 
+//   enroller for student in course
+void DataStore::enrollStudent(string studentId, string courseId) {
+    // checker to prevent duplicate enrollments
+    for (auto& enrollment : enrollments) {
+        if (enrollment.studentId == studentId && enrollment.courseId == courseId) {
+            return; // already enrolled
+        }
+    }
+    
+    // adder for new enrollment
+    Enrollment newEnrollment;
+    newEnrollment.studentId = studentId;
+    newEnrollment.courseId = courseId;
+    enrollments.push_back(newEnrollment);
+    saveData();
+}
+
 //   getter for user by ID
 User* DataStore::getUserById(string userId) {
     for (auto& user : users) {

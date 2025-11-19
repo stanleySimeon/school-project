@@ -73,15 +73,21 @@ string handleSignup(DataStore& store, string body) {
     // adder for user to datastore
     store.addUser(newUser);
     
-    // handler for teacher course assignment (optional for now)
-    if (role == "teacher" && requestData.contains("courseId") && !requestData["courseId"].is_null()) {
+    // handler for course assignment/enrollment
+    if (requestData.contains("courseId") && !requestData["courseId"].is_null()) {
         try {
             string courseId = requestData["courseId"];
             if (!courseId.empty()) {
-                store.assignTeacherToCourse(userId, courseId);
+                if (role == "teacher") {
+                    // assign teacher to course
+                    store.assignTeacherToCourse(userId, courseId);
+                } else if (role == "student") {
+                    // enroll student in course
+                    store.enrollStudent(userId, courseId);
+                }
             }
         } catch (...) {
-            // ignore course assignment errors for now
+            // ignore course assignment/enrollment errors for now
         }
     }
     

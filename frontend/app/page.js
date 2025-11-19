@@ -21,12 +21,12 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  //   fetcher for courses when teacher signup is selected
+  //   fetcher for courses when signup is selected
   useEffect(() => {
-    if (isSignup && role === 'teacher') {
+    if (isSignup) {
       fetchCourses();
     }
-  }, [isSignup, role]);
+  }, [isSignup]);
 
   //   fetcher for available courses
   const fetchCourses = async () => {
@@ -81,9 +81,9 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    //   validation for teacher course selection
-    if (role === 'teacher' && !courseId) {
-      setError('Please select a course to teach');
+    //   validation for course selection
+    if (!courseId) {
+      setError(`Please select a course to ${role === 'teacher' ? 'teach' : 'enroll in'}`);
       setLoading(false);
       return;
     }
@@ -97,7 +97,7 @@ export default function LoginPage() {
         dateOfBirth,
         email,
         role,
-        courseId: role === 'teacher' ? courseId : undefined
+        courseId
       });
 
       if (response.success) {
@@ -229,28 +229,26 @@ export default function LoginPage() {
                 />
               </div>
 
-              {/* Course Selection - Only for Teachers */}
-              {role === 'teacher' && (
-                <div>
-                  <label htmlFor="course" className="block text-sm font-medium text-gray-700 mb-2">
-                    Course to Teach
-                  </label>
-                  <select
-                    id="course"
-                    value={courseId}
-                    onChange={(e) => setCourseId(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
-                    required
-                  >
-                    <option value="">Select a course</option>
-                    {courses.map((course) => (
-                      <option key={course.id} value={course.id}>
-                        {course.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              {/* Course Selection - For both Teachers and Students */}
+              <div>
+                <label htmlFor="course" className="block text-sm font-medium text-gray-700 mb-2">
+                  {role === 'teacher' ? 'Course to Teach' : 'Course to Enroll'}
+                </label>
+                <select
+                  id="course"
+                  value={courseId}
+                  onChange={(e) => setCourseId(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition text-gray-900"
+                  required
+                >
+                  <option value="">Select a course</option>
+                  {courses.map((course) => (
+                    <option key={course.id} value={course.id}>
+                      {course.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </>
           )}
 

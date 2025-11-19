@@ -46,6 +46,9 @@ public:
     // assigner for teacher to course
     void assignTeacherToCourse(string teacherId, string courseId);
     
+    // enroller for student in course
+    void enrollStudent(string studentId, string courseId);
+    
     // getter for user by ID
     User* getUserById(string userId);
     

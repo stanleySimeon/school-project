@@ -1,8 +1,6 @@
 'use client';
 
-// ============================================================================
-// LOGIN PAGE - Authentication for Teachers and Students
-// ============================================================================
+//   login page for authentication for teachers and students
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -12,10 +10,11 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('student'); //   role state: 'teacher' or 'student'
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Handle login form submission
+  //   handler for login form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -25,10 +24,17 @@ export default function LoginPage() {
       const response = await login(username, password);
 
       if (response.success && response.user) {
-        // Store user data in localStorage
+        //   verification that role matches selection
+        if (response.user.role !== role) {
+          setError(`Invalid credentials for ${role} account`);
+          setLoading(false);
+          return;
+        }
+
+        //   storage of user data in localStorage
         localStorage.setItem('user', JSON.stringify(response.user));
 
-        // Redirect to appropriate dashboard
+        //   redirect to appropriate dashboard
         if (response.user.role === 'teacher') {
           router.push('/teacher');
         } else {
@@ -46,18 +52,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
-      <div className="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600 px-4">
+      <div className="bg-white rounded-lg shadow-2xl p-4 sm:p-8 w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
-            🎓 School Management
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">
+            School Management
           </h1>
           <p className="text-gray-600">Sign in to your account</p>
         </div>
 
         {/* Login Form */}
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
+          {/* Role Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              I am a:
+            </label>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setRole('student')}
+                className={`py-3 px-4 rounded-lg font-semibold transition-all ${role === 'student'
+                  ? 'bg-blue-600 text-white shadow-lg scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+              >
+                Student
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('teacher')}
+                className={`py-3 px-4 rounded-lg font-semibold transition-all ${role === 'teacher'
+                  ? 'bg-purple-600 text-white shadow-lg scale-105'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+              >
+                Teacher
+              </button>
+            </div>
+          </div>
+
           {/* Username Input */}
           <div>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
@@ -108,11 +143,19 @@ export default function LoginPage() {
         </form>
 
         {/* Demo Credentials */}
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
+        <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gray-50 rounded-lg">
           <p className="text-sm font-semibold text-gray-700 mb-2">Demo Credentials:</p>
-          <div className="text-sm text-gray-600 space-y-1">
-            <p><strong>Teacher:</strong> teacher / teacher123</p>
-            <p><strong>Student:</strong> john / john123</p>
+          <div className="text-sm text-gray-600 space-y-2">
+            <div>
+              <p className="font-medium text-purple-600">Teachers:</p>
+              <p className="ml-2">mrsmith, msjones, mrwilson, msdavis</p>
+              <p className="ml-2 text-xs">Password: teacher123</p>
+            </div>
+            <div>
+              <p className="font-medium text-blue-600">Students:</p>
+              <p className="ml-2">john, jane, bob</p>
+              <p className="ml-2 text-xs">Passwords: john123, jane123, bob123</p>
+            </div>
           </div>
         </div>
       </div>

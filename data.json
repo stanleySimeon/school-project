@@ -1,62 +1,174 @@
 {
+    "courses": [
+        {
+            "description": "Algebra, Calculus, and Geometry",
+            "id": "C001",
+            "name": "Mathematics",
+            "teacherId": "T001"
+        },
+        {
+            "description": "Literature, Grammar, and Writing",
+            "id": "C002",
+            "name": "English",
+            "teacherId": "T002"
+        },
+        {
+            "description": "Physics, Chemistry, and Biology",
+            "id": "C003",
+            "name": "Science",
+            "teacherId": "T003"
+        },
+        {
+            "description": "World History and Civics",
+            "id": "C004",
+            "name": "History",
+            "teacherId": "T004"
+        },
+        {
+            "description": "Programming and Web Development",
+            "id": "C005",
+            "name": "Computer Science",
+            "teacherId": "T001"
+        }
+    ],
+    "enrollments": [
+        {
+            "courseId": "C001",
+            "studentId": "JD001"
+        },
+        {
+            "courseId": "C002",
+            "studentId": "JD001"
+        },
+        {
+            "courseId": "C005",
+            "studentId": "JD001"
+        },
+        {
+            "courseId": "C001",
+            "studentId": "JS001"
+        },
+        {
+            "courseId": "C002",
+            "studentId": "JS001"
+        },
+        {
+            "courseId": "C003",
+            "studentId": "JS001"
+        },
+        {
+            "courseId": "C001",
+            "studentId": "BJ001"
+        },
+        {
+            "courseId": "C004",
+            "studentId": "BJ001"
+        }
+    ],
     "grades": [
         {
+            "courseId": "C001",
             "note": "Good progress",
             "score": 85,
-            "studentId": "S001",
-            "subject": "Mathematics",
-            "updatedBy": "T001"
+            "studentId": "JD001",
+            "teacherId": "T001"
         },
         {
+            "courseId": "C002",
             "note": "Excellent work",
             "score": 90,
-            "studentId": "S001",
-            "subject": "English",
-            "updatedBy": "T001"
+            "studentId": "JD001",
+            "teacherId": "T002"
         },
         {
+            "courseId": "C005",
+            "note": "Outstanding!",
+            "score": 95,
+            "studentId": "JD001",
+            "teacherId": "T001"
+        },
+        {
+            "courseId": "C001",
             "note": "Needs improvement",
             "score": 78,
-            "studentId": "S002",
-            "subject": "Mathematics",
-            "updatedBy": "T001"
+            "studentId": "JS001",
+            "teacherId": "T001"
         },
         {
+            "courseId": "C002",
             "note": "Very good",
             "score": 88,
-            "studentId": "S002",
-            "subject": "English",
-            "updatedBy": "T001"
+            "studentId": "JS001",
+            "teacherId": "T002"
         },
         {
+            "courseId": "C003",
+            "note": "Good effort",
+            "score": 82,
+            "studentId": "JS001",
+            "teacherId": "T003"
+        },
+        {
+            "courseId": "C001",
             "note": "Outstanding",
             "score": 92,
-            "studentId": "S003",
-            "subject": "Mathematics",
-            "updatedBy": "T001"
+            "studentId": "BJ001",
+            "teacherId": "T001"
+        },
+        {
+            "courseId": "C004",
+            "note": "Solid work",
+            "score": 85,
+            "studentId": "BJ001",
+            "teacherId": "T004"
         }
     ],
     "users": [
         {
             "id": "T001",
+            "name": "Mr. Smith",
             "password": "teacher123",
             "role": "teacher",
-            "username": "teacher"
+            "username": "mrsmith"
         },
         {
-            "id": "S001",
+            "id": "T002",
+            "name": "Ms. Jones",
+            "password": "teacher123",
+            "role": "teacher",
+            "username": "msjones"
+        },
+        {
+            "id": "T003",
+            "name": "Mr. Wilson",
+            "password": "teacher123",
+            "role": "teacher",
+            "username": "mrwilson"
+        },
+        {
+            "id": "T004",
+            "name": "Ms. Davis",
+            "password": "teacher123",
+            "role": "teacher",
+            "username": "msdavis"
+        },
+        {
+            "id": "JD001",
+            "name": "John Doe",
             "password": "john123",
             "role": "student",
             "username": "john"
         },
         {
-            "id": "S002",
+            "id": "JS001",
+            "name": "Jane Smith",
             "password": "jane123",
             "role": "student",
             "username": "jane"
         },
         {
-            "id": "S003",
+            "id": "BJ001",
+            "name": "Bob Johnson",
             "password": "bob123",
             "role": "student",
             "username": "bob"

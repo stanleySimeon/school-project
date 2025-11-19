@@ -3,7 +3,8 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 TARGET = school_server
-SRC = main.cpp
+SOURCES = main.cpp datastore.cpp http.cpp handlers.cpp router.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
 
 all: download_json $(TARGET)
 
@@ -15,11 +16,14 @@ download_json:
 		echo "JSON library downloaded successfully!"; \
 	fi
 
-$(TARGET): $(SRC)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SRC)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(TARGET) data.json
+	rm -f $(TARGET) $(OBJECTS) data.json
 
 run: $(TARGET)
 	./$(TARGET)

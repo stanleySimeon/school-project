@@ -130,15 +130,15 @@ void DataStore::saveData() {
 //   initializer with sample data
 void DataStore::initializeDefaultData() {
     //   adder for teachers (each teaches ONE course)
-    users.push_back({"T001", "mrsmith", "teacher123", "teacher", "Mr. Smith"});
-    users.push_back({"T002", "msjones", "teacher123", "teacher", "Ms. Jones"});
-    users.push_back({"T003", "mrwilson", "teacher123", "teacher", "Mr. Wilson"});
-    users.push_back({"T004", "msdavis", "teacher123", "teacher", "Ms. Davis"});
+    users.push_back({"T001", "mrsmith", "teacher123", "teacher", "Mr. Smith", "Mr", "Smith", "", "mrsmith@school.edu"});
+    users.push_back({"T002", "msjones", "teacher123", "teacher", "Ms. Jones", "Ms", "Jones", "", "msjones@school.edu"});
+    users.push_back({"T003", "mrwilson", "teacher123", "teacher", "Mr. Wilson", "Mr", "Wilson", "", "mrwilson@school.edu"});
+    users.push_back({"T004", "msdavis", "teacher123", "teacher", "Ms. Davis", "Ms", "Davis", "", "msdavis@school.edu"});
     
     //   adder for students (IDs auto-generated from first letter of first/last name)
-    users.push_back({"JD001", "john", "john123", "student", "John Doe"});
-    users.push_back({"JS001", "jane", "jane123", "student", "Jane Smith"});
-    users.push_back({"BJ001", "bob", "bob123", "student", "Bob Johnson"});
+    users.push_back({"JD001", "john", "john123", "student", "John Doe", "John", "Doe", "2005-03-15", "john@school.edu"});
+    users.push_back({"JS001", "jane", "jane123", "student", "Jane Smith", "Jane", "Smith", "2005-07-22", "jane@school.edu"});
+    users.push_back({"BJ001", "bob", "bob123", "student", "Bob Johnson", "Bob", "Johnson", "2005-11-08", "bob@school.edu"});
     
     //   adder for courses (each course has ONE teacher)
     courses.push_back({"C001", "Mathematics", "T001", "Algebra, Calculus, and Geometry"});

@@ -4704,7 +4704,7 @@ class parse_error : public exception
 
     @note For an input with n bytes, 1 is the index of the first character and
           n+1 is the index of the terminating null byte or the end of file.
-           lso holds true when reading a byte vector (CBOR or MessagePack).
+          This also holds true when reading a byte vector (CBOR or MessagePack).
     */
     const std::size_t byte;
 
@@ -6551,8 +6551,8 @@ enum class input_format_t { json, cbor, msgpack, ubjson, bson, bjdata };
 
 #ifndef JSON_NO_IO
 /*!
-Input adapter for stdio file access.  dapter read only 1 byte and do not use any
- buffer.  dapter is a very low level adapter.
+Input adapter for stdio file access. This adapter read only 1 byte and do not use any
+ buffer. This adapter is a very low level adapter.
 */
 class file_input_adapter
 {
@@ -13340,7 +13340,7 @@ class parser
                         return false;
                     }
 
-                    // We are done with  rray. Before we can parse a
+                    // We are done with this array. Before we can parse a
                     // new value, we need to evaluate the new state first.
                     // By setting skip_to_state_evaluation to false, we
                     // are effectively jumping to the beginning of this if.
@@ -18529,7 +18529,7 @@ inline void grisu2_digit_gen(char* buffer, int& length, int& decimal_exponent,
     const std::uint64_t ten_m = one.f;
     grisu2_round(buffer, length, dist, delta, p2, ten_m);
 
-    // By construction  lgorithm generates the shortest possible decimal
+    // By construction this algorithm generates the shortest possible decimal
     // number (Loitsch, Theorem 6.2) which rounds back to w.
     // For an input number of precision p, at least
     //
@@ -19324,7 +19324,7 @@ class serializer
                         bytes = 0;
                     }
 
-                    // remember the byte position of  ccept
+                    // remember the byte position of this accept
                     bytes_after_last_accept = bytes;
                     undumped_chars = 0;
                     break;

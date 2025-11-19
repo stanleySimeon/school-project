@@ -1,0 +1,24 @@
+# this a Render deployment configuration
+services:
+  # this a backend service configuration
+  - type: web
+    name: school-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    envVars:
+      - key: PORT
+        value: 8080
+    healthCheckPath: /api/courses
+    
+  # this a frontend service configuration
+  - type: web
+    name: school-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: school-backend
+          envVarKey: RENDER_EXTERNAL_URL

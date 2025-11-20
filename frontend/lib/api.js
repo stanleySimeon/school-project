@@ -1,6 +1,6 @@
 // this a API client module for communicating with the backend
 
-const API_BASE_URL = 'https://school-backend-production-1a5f.up.railway.app';
+const API_BASE_URL = 'https://schoolproject.leyagent.com';
 
 //   API functions
 

@@ -19,7 +19,7 @@ using namespace std;
 int main() {
     DataStore store;
     
-    //   getter for port from environment or default to 8080
+    //    get port from environment or default to 8080
     const char* portEnv = getenv("PORT");
     int port = portEnv ? atoi(portEnv) : 8080;
     
@@ -120,7 +120,7 @@ int main() {
         HttpRequest req = parseHttpRequest(requestStr);
         cout << "Request: " << req.method << " " << req.path << endl;
         
-        //   getter for response from appropriate handler
+        //    get response from appropriate handler
         string response = routeRequest(store, req);
         
         //   sender for response and close connection

@@ -191,7 +191,7 @@ string handleSignup(DataStore& store, string body) {
     return buildHttpResponse(201, "Created", response.dump());
 }
 
-// getter for list of all students
+//  get list of all students
 string handleGetStudents(DataStore& store) {
     vector<User> students = store.getAllStudents();
     json response = json::array();
@@ -206,7 +206,7 @@ string handleGetStudents(DataStore& store) {
     return buildHttpResponse(200, "OK", response.dump());
 }
 
-// getter for all courses
+//  get all courses
 string handleGetCourses(DataStore& store) {
     vector<Course> courses = store.getAllCourses();
     json response = json::array();
@@ -225,7 +225,7 @@ string handleGetCourses(DataStore& store) {
     return buildHttpResponse(200, "OK", response.dump());
 }
 
-//   getter for enrolled courses for a student
+//    get enrolled courses for a student
 string handleGetStudentCourses(DataStore& store, string studentId) {
     vector<Course> courses = store.getEnrolledCourses(studentId);
     json response = json::array();
@@ -272,7 +272,7 @@ string handleUnenrollCourse(DataStore& store, string body) {
     return buildHttpResponse(200, "OK", response.dump());
 }
 
-// getter for all grades for teacher view (for their courses)
+//  get all grades for teacher view (for their courses)
 string handleGetTeacherGrades(DataStore& store, string teacherId) {
     vector<Grade> grades = store.getGradesByTeacher(teacherId);
     json response = json::array();
@@ -294,7 +294,7 @@ string handleGetTeacherGrades(DataStore& store, string teacherId) {
     return buildHttpResponse(200, "OK", response.dump());
 }
 
-//   getter for grades for a specific student with course info
+//    get grades for a specific student with course info
 string handleGetStudentGrades(DataStore& store, string studentId) {
     vector<Grade> grades = store.getGradesByStudent(studentId);
     json response = json::array();
@@ -313,7 +313,7 @@ string handleGetStudentGrades(DataStore& store, string studentId) {
     return buildHttpResponse(200, "OK", response.dump());
 }
 
-//   getter for enrolled students for a specific course
+//    get enrolled students for a specific course
 string handleGetCourseStudents(DataStore& store, string courseId) {
     vector<User> students = store.getStudentsByCourse(courseId);
     json response = json::array();

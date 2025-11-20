@@ -223,7 +223,7 @@ void DataStore::assignTeacherToCourse(string teacherId, string courseId) {
     }
 }
 
-//   getter for user by ID
+//    get user by ID
 User* DataStore::getUserById(string userId) {
     for (auto& user : users) {
         if (user.id == userId) {
@@ -233,7 +233,7 @@ User* DataStore::getUserById(string userId) {
     return nullptr;
 }
 
-//   getter for all students
+//    get all students
 vector<User> DataStore::getAllStudents() {
     vector<User> students;
     for (auto& user : users) {
@@ -244,7 +244,7 @@ vector<User> DataStore::getAllStudents() {
     return students;
 }
 
-//   getter for grades for a student
+//    get grades for a student
 vector<Grade> DataStore::getGradesByStudent(string studentId) {
     vector<Grade> studentGrades;
     for (auto& grade : grades) {
@@ -255,12 +255,12 @@ vector<Grade> DataStore::getGradesByStudent(string studentId) {
     return studentGrades;
 }
 
-//   getter for all courses
+//    get all courses
 vector<Course> DataStore::getAllCourses() {
     return courses;
 }
 
-//   getter for course by ID
+//    get course by ID
 Course* DataStore::getCourseById(string courseId) {
     for (auto& course : courses) {
         if (course.id == courseId) {
@@ -270,7 +270,7 @@ Course* DataStore::getCourseById(string courseId) {
     return nullptr;
 }
 
-//   getter for courses for a specific teacher
+//    get courses for a specific teacher
 vector<Course> DataStore::getCoursesByTeacher(string teacherId) {
     vector<Course> teacherCourses;
     for (auto& course : courses) {
@@ -281,7 +281,7 @@ vector<Course> DataStore::getCoursesByTeacher(string teacherId) {
     return teacherCourses;
 }
 
-//   getter for enrolled courses for a student
+//    get enrolled courses for a student
 vector<Course> DataStore::getEnrolledCourses(string studentId) {
     vector<Course> studentCourses;
     for (auto& enrollment : enrollments) {
@@ -324,7 +324,7 @@ void DataStore::unenrollStudent(string studentId, string courseId) {
     }
 }
 
-//   getter for students enrolled in a course
+//    get students enrolled in a course
 vector<User> DataStore::getStudentsByCourse(string courseId) {
     vector<User> enrolledStudents;
     for (auto& enrollment : enrollments) {
@@ -340,12 +340,12 @@ vector<User> DataStore::getStudentsByCourse(string courseId) {
     return enrolledStudents;
 }
 
-//   getter for all grades (for teacher)
+//    get all grades (for teacher)
 vector<Grade> DataStore::getAllGrades() {
     return grades;
 }
 
-//   getter for grades for a teacher's courses
+//    get grades for a teacher's courses
 vector<Grade> DataStore::getGradesByTeacher(string teacherId) {
     vector<Grade> teacherGrades;
     for (auto& grade : grades) {

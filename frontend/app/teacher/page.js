@@ -146,13 +146,13 @@ export default function TeacherDashboard() {
     }
   };
 
-  //   getter for course name by ID
+  //    get course name by ID
   const getCourseName = (courseId) => {
     const course = courses.find(c => c.id === courseId);
     return course ? course.name : courseId;
   };
 
-  //   getter for students enrolled in a specific course
+  //    get students enrolled in a specific course
   const getEnrolledStudents = (courseId) => {
     return grades
       .filter(g => g.courseId === courseId)
@@ -160,7 +160,7 @@ export default function TeacherDashboard() {
       .filter((name, index, self) => self.indexOf(name) === index);
   };
 
-  //   getter for unique students across all grades
+  //    get unique students across all grades
   const getTotalStudents = () => {
     const uniqueStudents = grades
       .map(g => g.studentId)

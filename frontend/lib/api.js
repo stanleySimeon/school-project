@@ -30,7 +30,7 @@ export async function signup(userData) {
   return response.json();
 }
 
-//   getter for all students (Teacher only)
+//    get all students (Teacher only)
 export async function getAllStudents() {
   const response = await fetch(`${API_BASE_URL}/api/students`, {
     method: 'GET',
@@ -39,7 +39,7 @@ export async function getAllStudents() {
   return response.json();
 }
 
-//   getter for all grades (Teacher only)
+//    get all grades (Teacher only)
 export async function getAllGrades() {
   const response = await fetch(`${API_BASE_URL}/api/grades`, {
     method: 'GET',
@@ -48,7 +48,7 @@ export async function getAllGrades() {
   return response.json();
 }
 
-//   getter for grades for a specific student
+//    get grades for a specific student
 export async function getStudentGrades(studentId) {
   const response = await fetch(`${API_BASE_URL}/api/grades/${studentId}`, {
     method: 'GET',
@@ -57,7 +57,7 @@ export async function getStudentGrades(studentId) {
   return response.json();
 }
 
-//   getter for all available courses
+//    get all available courses
 export async function getAllCourses() {
   const response = await fetch(`${API_BASE_URL}/api/courses`, {
     method: 'GET',
@@ -66,7 +66,7 @@ export async function getAllCourses() {
   return response.json();
 }
 
-//   getter for courses enrolled by a student
+//    get courses enrolled by a student
 export async function getStudentCourses(studentId) {
   const response = await fetch(`${API_BASE_URL}/api/students/${studentId}/courses`, {
     method: 'GET',
@@ -75,7 +75,7 @@ export async function getStudentCourses(studentId) {
   return response.json();
 }
 
-//   getter for enrolled students for a specific course
+//    get enrolled students for a specific course
 export async function getCourseStudents(courseId) {
   const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/students`, {
     method: 'GET',
@@ -110,7 +110,7 @@ export async function unenrollCourse(studentId, courseId) {
   return response.json();
 }
 
-//   getter for grades for a teacher (their courses only)
+//    get grades for a teacher (their courses only)
 export async function getTeacherGrades(teacherId) {
   const response = await fetch(`${API_BASE_URL}/api/teacher/${teacherId}/grades`, {
     method: 'GET',

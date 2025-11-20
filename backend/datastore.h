@@ -49,7 +49,7 @@ public:
     // enroller for student in course
     void enrollStudent(string studentId, string courseId);
     
-    // getter for user by ID
+    //  get user by ID
     User* getUserById(string userId);
     
     // all students
@@ -61,7 +61,7 @@ public:
     // all courses
     vector<Course> getAllCourses();
     
-    // getter for course by ID
+    //  get course by ID
     Course* getCourseById(string courseId);
     
     // courses for a specific teacher

@@ -26,17 +26,17 @@ string routeRequest(DataStore& store, HttpRequest req) {
         return handleSignup(store, req.body);
     }
     
-    //   getter for all courses endpoint
+    //    get all courses endpoint
     if (req.method == "GET" && req.path == "/api/courses") {
         return handleGetCourses(store);
     }
     
-    //   getter for all students endpoint (for teacher)
+    //    get all students endpoint (for teacher)
     if (req.method == "GET" && req.path == "/api/students") {
         return handleGetStudents(store);
     }
     
-    //   getter for student's enrolled courses endpoint
+    //    get student's enrolled courses endpoint
     if (req.method == "GET" && req.path.find("/api/students/") == 0 && req.path.find("/courses") != string::npos) {
         size_t start = 14; // length of "/api/students/"
         size_t end = req.path.find("/courses");
@@ -44,7 +44,7 @@ string routeRequest(DataStore& store, HttpRequest req) {
         return handleGetStudentCourses(store, studentId);
     }
     
-    //   getter for enrolled students for a course endpoint
+    //    get enrolled students for a course endpoint
     if (req.method == "GET" && req.path.find("/api/courses/") == 0 && req.path.find("/students") != string::npos) {
         size_t start = 13; // length of "/api/courses/"
         size_t end = req.path.find("/students");
@@ -52,13 +52,13 @@ string routeRequest(DataStore& store, HttpRequest req) {
         return handleGetCourseStudents(store, courseId);
     }
     
-    //   getter for student grades endpoint
+    //    get student grades endpoint
     if (req.method == "GET" && req.path.find("/api/grades/") == 0) {
         string studentId = req.path.substr(12); // Extract student ID
         return handleGetStudentGrades(store, studentId);
     }
     
-    //   getter for teacher's grades endpoint
+    //    get teacher's grades endpoint
     if (req.method == "GET" && req.path.find("/api/teacher/") == 0 && req.path.find("/grades") != string::npos) {
         size_t start = 13; // length of "/api/teacher/"
         size_t end = req.path.find("/grades");

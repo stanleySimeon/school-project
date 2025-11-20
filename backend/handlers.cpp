@@ -5,7 +5,41 @@
 
 // handler for user login authentication
 string handleLogin(DataStore& store, string body) {
-    json requestData = json::parse(body);
+    // Validate body is not empty
+    if (body.empty()) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Request body is empty";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    json requestData;
+    try {
+        requestData = json::parse(body);
+    } catch (const json::parse_error& e) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Invalid JSON format";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    // Validate required fields exist
+    if (!requestData.contains("username") || !requestData.contains("password")) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Missing username or password";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    // Validate fields are not empty or null
+    if (requestData["username"].is_null() || requestData["password"].is_null() ||
+        requestData["username"].get<string>().empty() || requestData["password"].get<string>().empty()) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Username and password cannot be empty";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
     string username = requestData["username"];
     string password = requestData["password"];
     
@@ -59,6 +93,17 @@ string handleSignup(DataStore& store, string body) {
         return buildHttpResponse(400, "Bad Request", errorResponse.dump());
     }
     
+    // Validate fields are not null or empty
+    if (requestData["username"].is_null() || requestData["password"].is_null() ||
+        requestData["firstName"].is_null() || requestData["lastName"].is_null() ||
+        requestData["dateOfBirth"].is_null() || requestData["email"].is_null() ||
+        requestData["role"].is_null()) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Fields cannot be null";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
     string username = requestData["username"];
     string password = requestData["password"];
     string firstName = requestData["firstName"];
@@ -66,6 +111,23 @@ string handleSignup(DataStore& store, string body) {
     string dateOfBirth = requestData["dateOfBirth"];
     string email = requestData["email"];
     string role = requestData["role"];
+    
+    // Validate strings are not empty
+    if (username.empty() || password.empty() || firstName.empty() || 
+        lastName.empty() || dateOfBirth.empty() || email.empty() || role.empty()) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Fields cannot be empty";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    // Validate role is either "teacher" or "student"
+    if (role != "teacher" && role != "student") {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Invalid role. Must be 'teacher' or 'student'";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
     
     // generator for unique user ID based on role and timestamp
     time_t now = time(0);

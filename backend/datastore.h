@@ -73,9 +73,6 @@ public:
     // checker if student is enrolled in a course
     bool isEnrolled(string studentId, string courseId);
     
-    // enroll for student in a course
-    void enrollStudent(string studentId, string courseId);
-    
     // unenroll for student from a course
     void unenrollStudent(string studentId, string courseId);
     

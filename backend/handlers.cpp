@@ -30,7 +30,34 @@ string handleLogin(DataStore& store, string body) {
 
 // handler for user signup
 string handleSignup(DataStore& store, string body) {
-    json requestData = json::parse(body);
+    // Validate body is not empty
+    if (body.empty()) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Request body is empty";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    json requestData;
+    try {
+        requestData = json::parse(body);
+    } catch (const json::parse_error& e) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Invalid JSON format";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
+    
+    // Validate required fields
+    if (!requestData.contains("username") || !requestData.contains("password") || 
+        !requestData.contains("firstName") || !requestData.contains("lastName") ||
+        !requestData.contains("dateOfBirth") || !requestData.contains("email") ||
+        !requestData.contains("role")) {
+        json errorResponse;
+        errorResponse["success"] = false;
+        errorResponse["message"] = "Missing required fields";
+        return buildHttpResponse(400, "Bad Request", errorResponse.dump());
+    }
     
     string username = requestData["username"];
     string password = requestData["password"];

@@ -79,10 +79,42 @@ int main() {
             continue;
         }
         
-        //   reader for incoming request data
+        //   reader for incoming request data (read all available data)
+        string requestStr;
         char buffer[4096] = {0};
-        read(clientSocket, buffer, 4096);
-        string requestStr(buffer);
+        ssize_t bytesRead;
+        
+        // Read first chunk
+        bytesRead = read(clientSocket, buffer, sizeof(buffer) - 1);
+        if (bytesRead > 0) {
+            buffer[bytesRead] = '\0';
+            requestStr = string(buffer);
+            
+            // Parse headers to check for Content-Length
+            size_t headerEnd = requestStr.find("\r\n\r\n");
+            if (headerEnd != string::npos) {
+                size_t clPos = requestStr.find("Content-Length:");
+                if (clPos != string::npos && clPos < headerEnd) {
+                    // Extract Content-Length value
+                    size_t clStart = clPos + 15; // Length of "Content-Length:"
+                    size_t clEnd = requestStr.find("\r\n", clStart);
+                    int contentLength = stoi(requestStr.substr(clStart, clEnd - clStart));
+                    
+                    // Calculate how much body we've already read
+                    int bodyStart = headerEnd + 4;
+                    int bodyReceived = bytesRead - bodyStart;
+                    
+                    // Read remaining body if needed
+                    while (bodyReceived < contentLength) {
+                        bytesRead = read(clientSocket, buffer, sizeof(buffer) - 1);
+                        if (bytesRead <= 0) break;
+                        buffer[bytesRead] = '\0';
+                        requestStr += string(buffer);
+                        bodyReceived += bytesRead;
+                    }
+                }
+            }
+        }
         
         //   parser for HTTP request and route to handler
         HttpRequest req = parseHttpRequest(requestStr);

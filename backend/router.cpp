@@ -1,7 +1,16 @@
 #include "router.h"
+#include <iostream>
 
 //   router for HTTP requests to appropriate handlers
 string routeRequest(DataStore& store, HttpRequest req) {
+    //   Debug logging for POST requests
+    if (req.method == "POST") {
+        std::cout << "POST " << req.path << " - Body length: " << req.body.length() << std::endl;
+        if (!req.body.empty()) {
+            std::cout << "Body content: " << req.body << std::endl;
+        }
+    }
+    
     //   CORS preflight handler
     if (req.method == "OPTIONS") {
         return buildHttpResponse(200, "OK", "");
